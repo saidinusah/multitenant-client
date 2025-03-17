@@ -5,43 +5,27 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger
+  DialogTitle
 } from "~/components/ui/dialog";
-import {toTypedSchema} from "@vee-validate/zod";
-import {object, string} from "zod";
-import {useForm} from "vee-validate";
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from "~/components/ui/form";
-import {REGEXES} from "~/lib/constant";
-import {toast} from "vue-sonner";
+import { useForm } from "vee-validate";
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { toast } from "vue-sonner";
+import { membersCrudSchema } from "~/lib/schemas/members";
 
-const {visible} = defineProps<{ visible: boolean }>()
+const { visible } = defineProps<{ visible: boolean }>()
 const emit = defineEmits<{
   (e: 'close'): void
 }>()
 
-const formSchema = toTypedSchema(object({
-  foreNames: string().min(3, "Fore name is required"),
-  phoneNumber: string().regex(REGEXES.GHANA_PHONE_NUMBER, 'Check format of phone number'),
-  lastName: string().min(3, "Last name is required"),
-  idNumber: string().regex(REGEXES.ECOWAS_CARD, 'Check format of Ecowas card number')
-}))
 
-const {handleSubmit, setFieldError} = useForm({
-  validationSchema: formSchema,
+const { handleSubmit, setFieldError } = useForm({
+  validationSchema: membersCrudSchema,
 })
 
 const submitForm = handleSubmit((values) => {
-  $fetch<{ message: string; id: string }>('http://localhost:3050/api/members', {
+  useCustomFetch<{ message: string; id: string }>('/members', {
     method: 'POST',
-    body: {...values},
+    body: { ...values },
   }).then(_res => {
     toast.success("Successfully created member");
   }).catch(err => {
@@ -78,10 +62,10 @@ const submitForm = handleSubmit((values) => {
           <FormItem>
             <FormLabel>Forename(s)</FormLabel>
             <FormControl>
-              <Input placeholder="John" v-bind="componentField"/>
+              <Input placeholder="John" v-bind="componentField" />
             </FormControl>
-            <FormDescription/>
-            <FormMessage/>
+            <FormDescription />
+            <FormMessage />
           </FormItem>
         </FormField>
 
@@ -89,10 +73,10 @@ const submitForm = handleSubmit((values) => {
           <FormItem>
             <FormLabel>Last name</FormLabel>
             <FormControl>
-              <Input placeholder="Doe" v-bind="componentField"/>
+              <Input placeholder="Doe" v-bind="componentField" />
             </FormControl>
-            <FormDescription/>
-            <FormMessage/>
+            <FormDescription />
+            <FormMessage />
           </FormItem>
         </FormField>
 
@@ -100,20 +84,20 @@ const submitForm = handleSubmit((values) => {
           <FormItem>
             <FormLabel>Ecowas card number</FormLabel>
             <FormControl>
-              <Input placeholder="GHA-XXXXXXXX-X" v-bind="componentField"/>
+              <Input placeholder="GHA-XXXXXXXX-X" v-bind="componentField" />
             </FormControl>
-            <FormDescription/>
-            <FormMessage/>
+            <FormDescription />
+            <FormMessage />
           </FormItem>
         </FormField>
         <FormField name="phoneNumber" v-slot="{ componentField }">
           <FormItem>
             <FormLabel>Phone number</FormLabel>
             <FormControl>
-              <Input placeholder="+233XXXXXXXXX" v-bind="componentField"/>
+              <Input placeholder="+233XXXXXXXXX" v-bind="componentField" />
             </FormControl>
-            <FormDescription/>
-            <FormMessage/>
+            <FormDescription />
+            <FormMessage />
           </FormItem>
         </FormField>
 
@@ -128,4 +112,3 @@ const submitForm = handleSubmit((values) => {
   </Dialog>
 
 </template>
-

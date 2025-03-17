@@ -1,5 +1,5 @@
-import type {ColumnDef} from "@tanstack/vue-table";
-import {EyeIcon} from "lucide-vue-next";
+import type { ColumnDef } from "@tanstack/vue-table";
+import { EyeIcon } from "lucide-vue-next";
 
 export type MemberDetails = {
     id: number,
@@ -12,10 +12,6 @@ export type MemberDetails = {
 
 export const membersTableColumnDefinition: (viewDetails: Function) => ColumnDef<MemberDetails>[] = (viewDetails) => [
     {
-        accessorKey: 'id',
-        header: '',
-    },
-    {
         accessorKey: 'foreNames',
         header: 'Forename(s)'
     },
@@ -25,15 +21,22 @@ export const membersTableColumnDefinition: (viewDetails: Function) => ColumnDef<
     }, {
         accessorKey: 'phoneNumber',
         header: 'Contact',
-    }, {
+    },
+
+    {
+        accessorKey: 'idNumber',
+        header: 'Id Number',
+    },
+
+    {
         accessorKey: 'actions',
         header: '',
-        cell: ({row}) =>
+        cell: ({ row }) =>
             h(EyeIcon, {
-                    onClick: () => viewDetails(row.original.id),
-                    class: 'text-gray-700 hover:text-gray-300',
+                onClick: () => viewDetails(row.original.id),
+                class: 'text-gray-700 hover:text-gray-300',
                 size: 16,
 
-                }
+            }
             ),
     }]

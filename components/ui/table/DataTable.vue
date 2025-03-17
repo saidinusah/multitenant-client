@@ -1,5 +1,5 @@
 <script generic="TData, TValue" lang="ts" setup>
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import Label from "@/components/ui/label/Label.vue";
 import {
   Select,
@@ -9,10 +9,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {cn} from "@/lib/utils";
-import {FlexRender, getCoreRowModel, useVueTable, type ColumnDef} from "@tanstack/vue-table";
-import {ChevronLeft, ChevronRight} from "lucide-vue-next";
-import {computed, toRefs} from "vue";
+import { FlexRender, getCoreRowModel, useVueTable, type ColumnDef } from "@tanstack/vue-table";
+import { ChevronLeft, ChevronRight } from "lucide-vue-next";
+import { computed, toRefs } from "vue";
+import TableSkeleton from "~/components/ui/TableSkeleton.vue";
 import {
   Table,
   TableBody,
@@ -21,7 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from "./index";
-import TableSkeleton from "~/components/ui/TableSkeleton.vue";
 
 type Props = {
   columns: ColumnDef<TData, TValue>[];
@@ -32,11 +31,11 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   data: () => [],
-  pagination: () => ({page: 1, limit: 10, total: 0}),
+  pagination: () => ({ page: 1, limit: 10, total: 0 }),
   loading: () => false,
 });
 
-const {pagination, loading} = toRefs(props);
+const { pagination, loading } = toRefs(props);
 const emit = defineEmits<{
   (e: "page-change", value: number): void;
   (e: "limit-change", value: number): void;
@@ -53,7 +52,7 @@ const table = useVueTable({
 });
 
 const pageTotal = computed(
-    () => Math.floor(+pagination.value.total / +pagination.value.limit) || 1,
+  () => Math.floor(+pagination.value.total / +pagination.value.limit) || 1,
 );
 
 const start = computed(() => {
@@ -65,8 +64,8 @@ const start = computed(() => {
 });
 const end = computed(() => {
   return pagination.value.page * pagination.value.limit > pagination.value.total
-      ? pagination.value.total
-      : pagination.value.page * pagination.value.limit;
+    ? pagination.value.total
+    : pagination.value.page * pagination.value.limit;
 });
 </script>
 
@@ -75,26 +74,25 @@ const end = computed(() => {
     <Table class="border-b border-b-secondary-95 px-4">
       <TableHeader>
         <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id"
-                  class="border-y border-y-secondary-95">
+          class="border-y border-y-secondary-95">
           <TableHead v-for="header in headerGroup.headers" :key="header.id"
-                     class="text-sm font-normal leading-normal text-secondary-60">
+            class="text-sm font-normal leading-normal text-secondary-60 ">
             <FlexRender v-if="!header.isPlaceholder" :props="header.getContext()"
-                        :render="header.column.columnDef.header"/>
+              :render="header.column.columnDef.header" />
           </TableHead>
         </TableRow>
       </TableHeader>
 
       <TableBody>
         <template v-if="loading">
-          <TableSkeleton :cols="table?.getAllColumns().length"/>
+          <TableSkeleton :cols="table?.getAllColumns().length" />
         </template>
         <template v-else>
           <template v-if="table.getRowModel().rows?.length">
             <TableRow v-for="row in table.getRowModel().rows" :key="row.id"
-                      :data-state="row.getIsSelected() ? 'selected' : undefined"
-                      class="border-0 py-2 text-sm font-normal">
+              :data-state="row.getIsSelected() ? 'selected' : undefined" class="border-0 py-2 text-sm font-normal">
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-                <FlexRender :props="cell.getContext()" :render="cell.column.columnDef.cell"/>
+                <FlexRender :props="cell.getContext()" :render="cell.column.columnDef.cell" />
               </TableCell>
             </TableRow>
           </template>
@@ -115,7 +113,7 @@ const end = computed(() => {
     <div class="flex items-center space-x-3">
       <Select id="limit" :value="pagination.limit" name="limit" @update:model-value="(v) => emit('limit-change', +v)">
         <SelectTrigger class="h-6 w-16 border-none bg-[#F0F1F1] shadow-none">
-          <SelectValue placeholder="10"/>
+          <SelectValue placeholder="10" />
         </SelectTrigger>
 
         <SelectContent class="w-16">
@@ -138,9 +136,9 @@ const end = computed(() => {
 
     <div class="flex items-center space-x-3">
       <Select id="page" :default-value="pagination.page.toString()" :value="pagination.page" name="page"
-              @update:model-value="(v) => emit('page-change', +v)">
+        @update:model-value="(v) => emit('page-change', +v)">
         <SelectTrigger class="h-6 w-16 border-none bg-[#F0F1F1] shadow-none">
-          <SelectValue placeholder="10"/>
+          <SelectValue placeholder="10" />
         </SelectTrigger>
 
         <SelectContent class="w-16">
@@ -158,11 +156,11 @@ const end = computed(() => {
 
       <div class="flex space-x-1">
         <Button :disabled="pagination.page < 2" class="px-2" variant="ghost" @click="pagination.page -= 1">
-          <ChevronLeft class="h-4 w-4"/>
+          <ChevronLeft class="h-4 w-4" />
         </Button>
 
         <Button :disabled="pagination.page >= pageTotal" class="px-2" variant="ghost" @click="pagination.page += 1">
-          <ChevronRight class="h-4 w-4"/>
+          <ChevronRight class="h-4 w-4" />
         </Button>
       </div>
     </div>

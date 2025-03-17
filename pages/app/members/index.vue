@@ -3,8 +3,8 @@ import PageTitle from "~/components/common/PageTitle.vue";
 
 import CreateMember from "~/components/modules/members/CreateMember.vue";
 import DataTable from "~/components/ui/table/DataTable.vue";
-import {type MemberDetails, membersTableColumnDefinition} from '~/lib/table-columns/member'
-import {toast} from "vue-sonner";
+import { type MemberDetails, membersTableColumnDefinition } from '~/lib/table-columns/member'
+import { toast } from "vue-sonner";
 import ViewMemberDetails from "~/components/modules/members/ViewMemberDetails.vue";
 
 
@@ -13,7 +13,7 @@ const selectedId = ref<number>()
 const showDetailsModal = ref<boolean>(false)
 
 
-const {data, error} = await useCustomFetch<MemberDetails[]>('/members', {
+const { data, error } = await useCustomFetch<MemberDetails[]>('/members', {
   method: 'GET'
 })
 
@@ -47,27 +47,17 @@ definePageMeta({
 <template>
   <PageTitle title="Members">
 
-    <Button
-        variant="outline"
-        @click="showCreateMemberModal = true"
-    >
-      Add member
+    <Button @click="showCreateMemberModal = true">
+      Add new member
     </Button>
   </PageTitle>
 
   <div class="min-h-[60dvh]">
-    <DataTable
-        :columns="membersTableColumnDefinition(viewDetails)"
-        :data="data ?? []"
-        :pagination="{limit:10,page:1,total:data?.length ?? 0}"
-    />
+    <DataTable :columns="membersTableColumnDefinition(viewDetails)" :data="data ?? []"
+      :pagination="{ limit: 10, page: 1, total: data?.length ?? 0 }" />
   </div>
 
 
-  <ViewMemberDetails
-      :id="selectedId"
-      :visible="showDetailsModal"
-      @close="closeDetailsModal"
-  />
-  <CreateMember :visible="showCreateMemberModal" @close="closeCreationModal"/>
+  <ViewMemberDetails :id="selectedId" :visible="showDetailsModal" @close="closeDetailsModal" />
+  <CreateMember :visible="showCreateMemberModal" @close="closeCreationModal" />
 </template>

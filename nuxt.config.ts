@@ -1,7 +1,24 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+    app: {
+        head: {
+            link: [
+                {
+                    rel: 'preconnect',
+                    href: 'https://fonts.googleapis.com'
+                }, {
+                    rel: 'preconnect',
+                    href: 'https://fonts.gstatic.com',
+                    crossorigin: 'anonymous'
+                }, {
+                    rel: 'stylesheet',
+                    href: 'https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'
+                }
+            ]
+        }
+    },
     compatibilityDate: '2024-11-01',
-    devtools: {enabled: true},
+    devtools: { enabled: true },
     modules: ['@nuxtjs/tailwindcss', 'shadcn-nuxt'],
     shadcn: {
         /**
@@ -18,9 +35,8 @@ export default defineNuxtConfig({
         './assets/css/index.css'
     ],
     runtimeConfig: {
-        public: {
-            apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
-
+        app: {
+            apiBaseUrl: process.env.NUXT_API_BASE_URL,
         }
     },
     appConfig: {
